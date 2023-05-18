@@ -102,7 +102,8 @@ case 4:
 break;
 case 5:
 
-    this.$ = $$[$0-2]
+    { id++;
+      this.$ = new DoubleOperators($$[$0-2],"AND",new Terminal("#",id));}
 	
 break;
 case 6:

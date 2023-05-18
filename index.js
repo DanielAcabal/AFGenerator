@@ -2,7 +2,7 @@ const { argv } = require("node:process");
 const parser = require("./Grammar/grammar.js");
 const { AST } = require("./Generator/AST.js");
 
-const result = parser.parse("[a.x]#");
+const result = parser.parse("[ a. ( a | b )* .b ] #");
 const ast = new AST(result);
 ast.Generate();
 

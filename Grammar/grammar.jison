@@ -61,7 +61,8 @@ instrucciones
 
 instruccion
 	: LSB  expresion RSB END {
-    $$ = $2
+    { id++;
+      $$ = new DoubleOperators($2,"AND",new Terminal("#",id));}
 	}
 ;
 
