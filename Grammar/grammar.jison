@@ -41,7 +41,8 @@ To compile grammar.jison add in grammar.js:
 
 /* Association and Precedence */
 
-%left 'AND' 'OR' 
+%left 'OR' 
+%left 'AND'  
 %left 'PLUS' 'TIMES'
 %left 'QM'
 
