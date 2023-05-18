@@ -34,7 +34,7 @@ class DoubleOperators {
     return ({
       left,
       right,
-      id: -2,
+      id: this.type,
       firstPos,
       lastPos,
       anulable,

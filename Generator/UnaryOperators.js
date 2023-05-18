@@ -26,7 +26,7 @@ class UnaryOperators {
     return ({
       left,
       right: null,
-      id: -1,
+      id: this.type,
       firstPos,
       lastPos,
       anulable,
