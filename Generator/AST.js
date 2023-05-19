@@ -48,8 +48,8 @@ class AST {
       );
       if (reduced.has(value)) {
         const previousFollow = reduced.get(value);
-        const newFollow =  [...new Set(previousFollow.concat(follows))]
-        reduced.set(value, newFollow.sort((a,b)=>a-b));
+        const newFollow = [...new Set(previousFollow.concat(follows))];
+        reduced.set(value, newFollow.sort((a, b) => a - b));
       } else {
         reduced.set(value, [...follows]);
       }
@@ -71,8 +71,10 @@ class AST {
         newState.set(index, has);
       }
     });
+    if (reduced.has("#")) {
+      newState.set("#", true);
+    }
     transitionTable.push(newState);
-    
   }
 }
 function compareLists(list1, list2) {
