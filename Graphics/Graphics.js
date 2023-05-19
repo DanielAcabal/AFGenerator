@@ -1,4 +1,5 @@
 const { Graph, Digraph } = require("graphviz-node");
+const CryptoJs = require("crypto");
 function AFD(transitionTable) {
   const graphAttributes = {
     "rankdir": "LR",
@@ -74,8 +75,50 @@ function followTable(followsT) {
 
   g.render("example2");
 }
+function tree(tree) {
+  const g = new Digraph("Tree");
+  const attributes = {
+    rankdir: "TB",
+    concentrate: true,
+  };
+  const nodeAttributes = {
+    shape: "record",
+  };
+  g.set(attributes);
+  g.setNodesAttributes(nodeAttributes);
+  postOrder(tree, g);
+  g.render("tree");
+}
+function postOrder(root, graph) {
+  if (!root) return "";
+  // Children node
+  const left = postOrder(root.left, graph);
+  const right = postOrder(root.right, graph);
+  // Creating and id for a node
+  const hash = CryptoJs.createHash("sha256").update(
+    JSON.stringify(root) + left + right,
+  ).digest("hex").toString();
+  
+  const val = root.hasOwnProperty("value") ? root.value : root.id;
+  const id = isNaN(root.id) ? "" : `|${root.id}`;
+  // Creating node
+  const parent = graph.addNode(hash, {
+    label: `${root.firstPos.join(",")}|{ ${
+      root.anulable ? "A" : "N"
+    } |${val}${id}}|${root.lastPos.join(",")}`,
+  });
+  // Linking nodes
+  if (left) {
+    graph.addEdge(parent, left);
+  }
+  if (right) {
+    graph.addEdge(parent, right);
+  }
+  return parent;
+}
 function Graphic() {
 }
 exports.AFD = AFD;
 exports.transitionTable = transitionTable;
 exports.followTable = followTable;
+exports.tree = tree;

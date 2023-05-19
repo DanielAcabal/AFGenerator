@@ -9,8 +9,9 @@ class Terminal {
     terminal.set(this.value,null)
     
     return ({
-      left: this.value,
+      left: null,
       right: null,
+      value: this.value,
       id: this.id,
       firstPos: [this.id],
       lastPos: [this.id],
