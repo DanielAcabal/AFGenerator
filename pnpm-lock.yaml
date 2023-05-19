@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  graphviz-node:
+    specifier: ^0.8.0
+    version: 0.8.0
   jison:
     specifier: 0.4.18
     version: 0.4.18
@@ -64,6 +67,16 @@ packages:
   /esutils@1.0.0:
     resolution: {integrity: sha512-x/iYH53X3quDwfHRz4y8rn4XcEwwCJeWsul9pF1zldMbGtgOtMNBEOuYWwB1EQlK2LRa1fev3YAgym/RElp5Cg==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /fs@0.0.1-security:
+    resolution: {integrity: sha512-3XY9e1pP0CVEUCdj5BmfIZxRBTSDycnbqhIOGec9QYtmVH2fbLpj86CFWkrNOkt/Fvty4KZG5lTglL9j/gJ87w==}
+    dev: false
+
+  /graphviz-node@0.8.0:
+    resolution: {integrity: sha512-IZhHt+9D6oYn/DrjZZkOQC8sjeJ+Slbb5XR1kwtw7BjrCBnGxykGIOM+1Q84MsazddwmXrop9Vel/MJA2jcNoQ==}
+    dependencies:
+      fs: 0.0.1-security
     dev: false
 
   /jison-lex@0.3.4:
