@@ -4,10 +4,10 @@ class DoubleOperators {
     this.exp2 = exp2;
     this.type = type;
   }
-  Generate(followsTable) {
+  Generate(followsTable, terminal) {
     // Generating children nodes
-    const left = this.exp1.Generate(followsTable);
-    const right = this.exp2.Generate(followsTable);
+    const left = this.exp1.Generate(followsTable, terminal);
+    const right = this.exp2.Generate(followsTable, terminal);
     let anulable = undefined;
     let firstPos = [];
     let lastPos = [];
@@ -28,7 +28,8 @@ class DoubleOperators {
           for (let index = 0; index < followsTable.length; index++) {
             const { id, follows } = followsTable[index];
             if (id == followId) { // Looking for id in follows table
-              const newFollows = follows.concat(right.firstPos); //  the follows are firstPos of right 
+              const newFollows = [...new Set(follows.concat(right.firstPos))]; //  the follows are firstPos of left
+              newFollows.sort((a, b) => a - b);
               followsTable[index].follows = newFollows;
               break;
             }

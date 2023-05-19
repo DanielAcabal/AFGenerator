@@ -3,9 +3,10 @@ class Terminal {
     this.value = value;
     this.id = pos;
   }
-  Generate(follows) {
-    console.log(this.value,this.id)
+  Generate(follows,terminal) {
+    // console.log(this.value,this.id)
     follows.push({value:this.value,id:this.id,follows:[]});
+    terminal.set(this.value,null)
     
     return ({
       left: this.value,

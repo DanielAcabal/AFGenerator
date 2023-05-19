@@ -3,9 +3,9 @@ class UnaryOperators {
     this.exp = exp;
     this.type = type;
   }
-  Generate(followsTable) {
-    const left = this.exp.Generate(followsTable); // Generating child node
-    console.log(this.exp, this.type);
+  Generate(followsTable, terminal) {
+    const left = this.exp.Generate(followsTable, terminal); // Generating child node
+    //console.log(this.exp, this.type);
     let firstPos = [];
     let lastPos = [];
     let anulable = undefined;
@@ -31,7 +31,8 @@ class UnaryOperators {
         for (let index = 0; index < followsTable.length; index++) {
           const { id, follows } = followsTable[index];
           if (id == followId) { // Looking for id in follows table
-            const newFollows = follows.concat(firstPos); //  the follows are firstPos of left
+            const newFollows = [...new Set(follows.concat(firstPos))]; //  the follows are firstPos of left
+            newFollows.sort((a, b) => a - b);
             followsTable[index].follows = newFollows;
             break;
           }
