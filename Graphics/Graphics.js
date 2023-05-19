@@ -50,7 +50,32 @@ function transitionTable(transitionTable, terminals) {
 
   g.render("example1");
 }
+function followTable(followsT) {
+  // Create new graph
+  const g = new Digraph("followTable");
+
+  const h1 = g.addHTMLNode("h1", { "shape": "none" });
+  h1.setTableAttributes({
+    "border": "0",
+    "cellborder": "1",
+    "cellspacing": "0",
+    "cellpadding": "4",
+  });
+  h1.addRow([{ data: "Terminal", attributes: {} }, {
+    data: "ID",
+    attributes: {},
+  }, { data: "Follow", attributes: {} }]);
+  followsT.forEach(({ value, id, follows }) => {
+    h1.addRow([{ data: value, attributes: {} }, { data: id, attributes: {} }, {
+      data: follows.join(", "),
+      attributes: {},
+    }]);
+  });
+
+  g.render("example2");
+}
 function Graphic() {
 }
 exports.AFD = AFD;
 exports.transitionTable = transitionTable;
+exports.followTable = followTable;
