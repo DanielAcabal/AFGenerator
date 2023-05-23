@@ -37,8 +37,8 @@ function createDirectory(userPath) {
   });
 }
 // Main function
-Generate("[a]# [b.a.c]#", {
-  path: "./hola/xd",
-  index: 0,
+Generate("[a]# [(b|a)+.c*]#", {
+  path: "./examples/outputs",
+  index: 1,
   graphics: ["-t", "-f", "-s", "-a"],
 });

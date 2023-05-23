@@ -91,12 +91,12 @@ function tree(tree, name) {
   render(g.toDot(), name);
 }
 function render(content, name) {
-  cmd.exec(`echo '${content}' dot -Tsvg > ${name}.svg`, (err, out) => {
+  cmd.exec(`echo '${content}'| dot -Tsvg > ${name}.svg`, (err, out) => {
     if (err) {
       console.log(err);
       return;
     }
-    console.log(`SVG generated on ${name}`);
+    console.log(`PNG generated on ${name}`,out);
   });
 }
 function postOrder(root, graph) {
@@ -144,7 +144,7 @@ function graph({ trees, follows, transitionTables, terminals }, options) {
         );
         break;
       default:
-        AFD(transitionTables[index], `${path}/fad${index}`);
+        AFD(transitionTables[index], `${path}/dfa${index}`);
         break;
     }
   }
