@@ -1,23 +1,44 @@
-const { argv } = require("node:process");
+const fs = require("fs");
+const path = require("path");
 const parser = require("./Grammar/grammar.js");
 const { AST } = require("./Generator/AST.js");
-
-//const result = parser.parse("[ a .( a | b )* .b ] #")
-//const result = parser.parse("[ ( a.b | a.c )+ .d.a? ] # ");
-//const result = parser.parse("[L+|N+|L.(L|N)*|c.(L|N|R)*.c|S+]#")
-//const result = parser.parse("[s?.0*.(d+|d*.p.d+)]#")
-//const result = parser.parse("[(a+|a+|a.b.c+)+.c*]#")
-//const result = parser.parse("[a*.(a.b+).b.a+.(b|a)*.b]#")
-//const result = parser.parse("[a.a+.b|c.b*]#[a|b|c?.a+.b*]# [a+.b+.c+|a]#")
-const result = parser.parse("[(a+.b|b.a+|a+.a|b.b+)*.c]#")
-
-const ast = new AST(result);
-ast.Generate();
-//console.log("Treess:",ast.trees[0])
-console.log("Follows: ",ast.follows[0])
-ast.transitionTables[0].forEach((element,index) => {
-  console.log(index,element)
-});
-argv.forEach((value, index) => {
-  console.log(index, value);
+const { graph } = require(
+  "./Graphics/Graphics.js",
+);
+/**
+ * Create the graphs 
+ * @param  {String} patterns List of pattern like [<Pattern>]# , ... 
+ * @param  {Object} options  Required {path} Optionals { index,graphics}
+ */
+function Generate(patterns, options) {
+  const result = parser.parse(patterns);
+  const ast = new AST(result);
+  ast.Generate();
+  const { trees, follows, transitionTables, terminals } = ast;
+  if (!options.path) return;
+  createDirectory(options.path).then(() => {
+    if (options.hasOwnProperty("index") && options.hasOwnProperty("graphics")) {
+      graph({ trees, follows, transitionTables, terminals }, options);
+    }
+  }).catch((err) => console.log(err));
+}
+function createDirectory(userPath) {
+  const directories = path.extname(userPath)
+    ? path.dirname(userPath)
+    : userPath;
+  return new Promise((resolve, reject) => {
+    fs.mkdir(directories, { recursive: true }, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+// Main function
+Generate("[a]# [b.a.c]#", {
+  path: "./hola/xd",
+  index: 0,
+  graphics: ["-t", "-f", "-s", "-a"],
 });

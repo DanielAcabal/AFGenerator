@@ -1,6 +1,7 @@
-const { Graph, Digraph } = require("graphviz-node");
+const cmd = require("node:child_process");
+const { Digraph } = require("graphviz-node");
 const CryptoJs = require("crypto");
-function AFD(transitionTable) {
+function AFD(transitionTable, name) {
   const graphAttributes = {
     "rankdir": "LR",
   };
@@ -17,9 +18,9 @@ function AFD(transitionTable) {
     });
     return state;
   });
-  g.render("example");
+  render(g.toDot(), name);
 }
-function transitionTable(transitionTable, terminals) {
+function transitionTable(transitionTable, terminals, name) {
   // Create new graph
   const g = new Digraph("TransitionTable");
 
@@ -49,9 +50,9 @@ function transitionTable(transitionTable, terminals) {
     }, ...transitions]);
   });
 
-  g.render("example1");
+  render(g.toDot(), name);
 }
-function followTable(followsT) {
+function followTable(followsT, name) {
   // Create new graph
   const g = new Digraph("followTable");
 
@@ -73,9 +74,9 @@ function followTable(followsT) {
     }]);
   });
 
-  g.render("example2");
+  render(g.toDot(), name);
 }
-function tree(tree) {
+function tree(tree, name) {
   const g = new Digraph("Tree");
   const attributes = {
     rankdir: "TB",
@@ -87,7 +88,16 @@ function tree(tree) {
   g.set(attributes);
   g.setNodesAttributes(nodeAttributes);
   postOrder(tree, g);
-  g.render("tree");
+  render(g.toDot(), name);
+}
+function render(content, name) {
+  cmd.exec(`echo '${content}' dot -Tsvg > ${name}.svg`, (err, out) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`SVG generated on ${name}`);
+  });
 }
 function postOrder(root, graph) {
   if (!root) return "";
@@ -98,7 +108,7 @@ function postOrder(root, graph) {
   const hash = CryptoJs.createHash("sha256").update(
     JSON.stringify(root) + left + right,
   ).digest("hex").toString();
-  
+
   const val = root.hasOwnProperty("value") ? root.value : root.id;
   const id = isNaN(root.id) ? "" : `|${root.id}`;
   // Creating node
@@ -116,8 +126,30 @@ function postOrder(root, graph) {
   }
   return parent;
 }
-function Graphic() {
+function graph({ trees, follows, transitionTables, terminals }, options) {
+  const { path, index, graphics } = options;
+  for (const graphic of graphics) {
+    switch (graphic) {
+      case "-t":
+        tree(trees[index], `${path}/tree${index}`);
+        break;
+      case "-f":
+        followTable(follows[index], `${path}/FollowTable${index}`);
+        break;
+      case "-s":
+        transitionTable(
+          transitionTables[index],
+          terminals[index],
+          `${path}/TransitionTable${index}`,
+        );
+        break;
+      default:
+        AFD(transitionTables[index], `${path}/fad${index}`);
+        break;
+    }
+  }
 }
+exports.graph = graph;
 exports.AFD = AFD;
 exports.transitionTable = transitionTable;
 exports.followTable = followTable;
