@@ -96,7 +96,7 @@ function render(content, name) {
       console.log(err);
       return;
     }
-    console.log(`PNG generated on ${name}`,out);
+    console.log(`SVG generated on ${name}`,out);
   });
 }
 function postOrder(root, graph) {
