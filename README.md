@@ -34,12 +34,17 @@ This function applies the tree method to each pattern and takes 2 parameters:
   - index: Indicates the pattern to be used from the pattern list
   - graphics: List of graphs to generate; -t [binary tree], -f [follows table], -s [transition table], -a [deterministic finite automaton]
 ## Example of usage
+Use the Generate function in the index.js file or import it into another file.
 ```js
 Generate("[a]# [(b|a)+.c*]#", {
   path: "./examples/outputs",
   index: 1,
   graphics: ["-t", "-f", "-s", "-a"],
 });
+```
+Then, execute it
+```bash
+  node index.js 
 ```
 Generated outputs
 - [Binary tree](./examples/outputs/tree1.svg)
