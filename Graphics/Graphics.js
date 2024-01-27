@@ -1,4 +1,4 @@
-const cmd = require("node:child_process");
+const cmd = require("child_process");
 const { Digraph } = require("graphviz-node");
 const CryptoJs = require("crypto");
 function AFD(transitionTable, name) {
@@ -18,7 +18,8 @@ function AFD(transitionTable, name) {
     });
     return state;
   });
-  render(g.toDot(), name);
+  g.render(name)
+  render(name);
 }
 function transitionTable(transitionTable, terminals, name) {
   // Create new graph
@@ -50,7 +51,8 @@ function transitionTable(transitionTable, terminals, name) {
     }, ...transitions]);
   });
 
-  render(g.toDot(), name);
+  g.render(name)
+  render(name);
 }
 function followTable(followsT, name) {
   // Create new graph
@@ -74,7 +76,8 @@ function followTable(followsT, name) {
     }]);
   });
 
-  render(g.toDot(), name);
+  g.render(name)
+  render(name);
 }
 function tree(tree, name) {
   const g = new Digraph("Tree");
@@ -88,12 +91,13 @@ function tree(tree, name) {
   g.set(attributes);
   g.setNodesAttributes(nodeAttributes);
   postOrder(tree, g);
-  render(g.toDot(), name);
+  g.render(name)
+  render(name);
 }
-function render(content, name) {
-  cmd.exec(`echo '${content}'| dot -Tsvg > ${name}.svg`, (err, out) => {
-    if (err) {
-      console.log(err);
+function render(name) {
+  cmd.exec(`cat ${name}.dot | dot -Tsvg > ${name}.svg`, (err, out,err2) => {
+    if (err || err2) {
+      console.log(err,err2);
       return;
     }
     console.log(`SVG generated on ${name}`,out);

@@ -37,8 +37,8 @@ function createDirectory(userPath) {
   });
 }
 // Main function
-Generate("[a]# [(b|a)+.c*]#", {
-  path: "./examples/outputs",
-  index: 1,
+Generate("[L+|N+|L.(L|N)*|c.(L|N|R)*.c|S+]#", {
+  path: "./examples/outputs3",
+  index: 0,
   graphics: ["-t", "-f", "-s", "-a"],
 });
